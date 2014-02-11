@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Reveal-fuel-rocketeer : &quot;FuelPHP &amp; CodeIgniter ユーザの集い #3 (2014/02/15)&quot; 用資料" />
+  <meta name="author" content="Mamoru Otsuka">
+  <title>FuelPHPをRocketeerで簡単にデプロイする</title>
+
+  <link rel="stylesheet" href="reveal/css/reveal.min.css">
+  <link rel="stylesheet" href="reveal/css/theme/night.css">
+  <link rel="stylesheet" href="app.css">
+
+  <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+  <script src="reveal/js/reveal.min.js"></script>
+  <script>
+    $(function () {
+      Reveal.initialize({center:false, history: true});
+      $.get('https://api.github.com/users/Anahkiasen', function (response) {
+        $('#section-rocketeer-about img').attr('src', 'https://gravatar.com/avatar/' + response.gravatar_id + '?s=200');
+      });
+    });
+  </script>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <section id="cover">
+      <h1>FuelPHPをRocketeerで簡単にデプロイする</h1>
+      <p><a target="_blank" href="http://atnd.org/events/46859">FuelPHP & CodeIgniter ユーザの集い #3</a> on February 15, 2014</p>
+      <p>Mamoru Otsuka (<a target="_blank" href="https://twitter.com/madmamor">@madmamor</a>)</p>
+    </section>
+
+    <section id="section-outline">
+      <h2>Outline</h2>
+      <ol>
+        <li><a href="#/section-aboutme">About Me</a></li>
+        <li><a href="#/section-deploy">旧来のデプロイ</a></li>
+        <li><a href="#/section-rocketeer-about">Rocketeer</a></li>
+        <li><a href="#/section-rocketeer-deploy">Rocketeerのデプロイイメージ</a></li>
+        <li><a href="#/section-rocketeer-fuelphp">FuelPHPでRocketeer</a></li>
+        <li><a href="#/section-demo">デモ</a></li>
+      </ol>
+    </section>
+
+    <section id="section-aboutme">
+      <h2>About Me</h2>
+      <div>
+        <div class="icon"></div>
+        <table>
+          <tr>
+            <th>Name :</th>
+            <td>Mamoru Otsuka</td>
+          </tr>
+          <tr>
+            <th>WEB :</th>
+            <td><a target="_blank" href="http://madroom.net/">http://madroom.net/</a></td>
+          </tr>
+          <tr>
+            <th>Twitter :</th>
+            <td><a target="_blank" href="https://twitter.com/madmamor">@madmamor</a></td>
+          </tr>
+          <tr>
+            <th>Facebook :</th>
+            <td><a target="_blank" href="https://www.facebook.com/mamoru.otsuka">mamoru.otsuka</a></td>
+          </tr>
+          <tr>
+            <th>Blog :</th>
+            <td><a target="_blank" href="http://madroom-project.blogspot.jp/">madroom project</a></td>
+          </tr>
+          <tr>
+            <th>GitHub :</th>
+            <td><a target="_blank" href="https://github.com/mamor">@mamor</a></td>
+          </tr>
+          <tr>
+            <th>Android Apps :</th>
+            <td><a target="_blank" href="https://play.google.com/store/apps/developer?id=madroom+project">madroom project</a></td>
+          </tr>
+          <tr>
+            <th>Location :</th>
+            <td>TAMACEN & SYIBUYA</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="section-deploy">
+      <h2>旧来のデプロイ</h2>
+      <ul class="main">
+        <li class="fragment"><span class="point">FTPで手動アップロード</span><ul>
+          <li class="fragment">ヒューマンエラーが出やすくなる</li>
+          <li class="fragment">最新の状態がレポジトリとズレる</li>
+        </ul></li>
+        <li class="fragment"><span class="point">独自スクリプトで自動化</span><ul>
+          <li class="fragment">スクリプトのメンテナンスが大変になる</li>
+          <li class="fragment">作った人がいなくなるとよくわからなくなる</li>
+        </ul></li>
+      </ul>
+      <p class="fragment point">そこで</p>
+      <ul class="main">
+        <li class="fragment"><span class="point">Capistranoを使う</span><ul>
+          <li class="fragment">最も使われていると思われるデプロイツール(Ruby製)</li>
+          <li class="fragment">簡単な手順なら設定だけでデプロイを自動化できる</li>
+          <li class="fragment">でも、ComposerやPHPUnitを実行するにはカスタムタスクが必要</li>
+          <li class="fragment">カスタムタスクはRubyで書く(そんなに難しくはないけど)</li>
+          <li class="fragment">(PHPプロジェクトにこっそり導入するとチーム内で文句が出そう)</li>
+        </ul></li>
+      </ul>
+      <p class="fragment point">PHPプロジェクト向けに特化したCapistranoっぽいツールはないの？</p>
+    </section>
+
+    <section id="section-rocketeer-about">
+      <h2>Rocketeer</h2>
+      <ul class="main">
+        <li class="fragment">PHPプロジェクト向けに特化したCapistranoっぽいツール</li>
+        <li class="fragment">PHP製</li>
+        <li class="fragment">MITライセンス</li>
+        <li class="fragment">読み方は「ろけってぃあ」意味は「ロケットを飛ばす人」みたいな</li>
+        <li class="fragment">公式: <a target="_blank" href="http://rocketeer.autopergamene.eu/">http://rocketeer.autopergamene.eu/</a></li>
+        <li class="fragment">GitHub: <a target="_blank" href="https://github.com/Anahkiasen/rocketeer">https://github.com/Anahkiasen/rocketeer</a></li>
+        <li class="fragment">ComposerやPHPUnitの実行にも標準対応</li>
+        <li class="fragment">カスタムタスクもPHPで書ける</li>
+        <li class="fragment">GitHubのスター数661(2014/02/11現在)</li>
+      </ul>
+      <span class="fragment">
+        <img />
+        <ul class="main">
+          <li>Maxime Fabre氏が開発</li>
+          <li>2013年6月、v0.1がリリース</li>
+          <li>2014年1月、v1.0がリリース</li>
+          <li>2014年2月11日現在、v1.1.1</li>
+        </ul>
+      </span>
+    </section>
+
+    <section id="section-rocketeer-deploy">
+      <h2>Rocketeerのデプロイイメージ</h2>
+      <section>
+        <ol class="main">
+          <li class="fragment">手元(ローカル)で発射ボタンを押す(コマンドを打つ)</li>
+          <li class="fragment">ミサイル(レポジトリのソース)が飛ぶ</li>
+          <li class="fragment">遠隔地(リモート)に着弾(デプロイ)する</li>
+        </ol>
+        <p class="fragment"><span class="point">精度の高い</span>弾道ミサイルみたいな感じ？</p>
+        <p class="fragment">同名のSF漫画もあったみたいです。<a target="_blank" href="http://bit.ly/1fc8wAi">http://bit.ly/1fc8wAi</a></p>
+        <img class="fragment" src="http://georgespigot.files.wordpress.com/2012/03/the-rocketeer-01.jpg" width="500" />
+        <p class="fragment">(ウ◯トラマン)</p>
+      </section>
+      <section>
+        <p>具体的には</p>
+        <ol class="main">
+          <li class="fragment">デプロイ先にSSHでログイン</li>
+          <li class="fragment point">実行したいカスタムタスクがあれば、実行 (before deploy)</li>
+          <li class="fragment">git clone (サブモジュール含む)</li>
+          <li class="fragment">composer install (composer.lockはバージョン管理しておきましょう)</li>
+          <li class="fragment">PHPUnitを実行したければ、実行。失敗したらデプロイ中止</li>
+          <li class="fragment">ログディレクトリ等のパーミッションを調整</li>
+          <li class="fragment">ログディレクトリ等、デプロイを跨いでの共有化</li>
+          <li class="fragment point">実行したいカスタムタスクがあれば、実行 (before symlink)<br />
+            <span class="fragment">カスタムタスクが false を返せばデプロイ中止(v1.1から)<br /></span>
+            <span class="fragment">grunt + jasmine とか組み込めます</span></li>
+          <li class="fragment">symlink を張り替えて、デプロイ完了</li>
+          <li class="fragment point">実行したいカスタムタスクがあれば、実行 (after deploy)<br />
+            <span class="fragment">このタイミングで grunt + jasmine とかやってもデプロイは既に完了しているのであまり意味無いです</span></li>
+        </ol>
+      </section>
+    </section>
+
+    <section id="section-rocketeer-fuelphp">
+      <h2>FuelPHPでRocketeer</h2>
+      <section>
+        <h3 class="fragment point">下準備</h3>
+        <h4 class="fragment">ローカルでやっておくこと</h4>
+        <ol class="main">
+          <li class="fragment">php.ini で "phar.readonly = Off"</li>
+          <li class="fragment">デプロイしたいFuelPHPプロジェクトをGitHubやBitbucketにコミット</li>
+        </ol>
+        <h4 class="fragment">リモート(デプロイ先)でやっておくこと</h4>
+        <ol class="main">
+          <li class="fragment">Git, PHP(とmcrypt extension), Composerのインストール
+            (Composer はプロジェクト直下の composer.phar でも良いかも)</li>
+          <li class="fragment">~/.ssh/config に "StrictHostKeyChecking no"
+            (あるいは、一度手動でcloneして、ホストの登録をしておく)</li>
+          <li class="fragment">デプロイ先のpublicディレクトリへのsymlink</li>
+        </ol>
+      </section>
+      <section>
+        <h3 class="fragment point">RocketeerのDLと設定ファイルの生成</h3>
+        <ol class="main">
+          <li class="fragment">http://rocketeer.autopergamene.eu/versions/rocketeer.phar から rocketeer.phar をDL
+            (rocketeer.phar は自身に認証情報をキャッシュするので .gitignore でバージョン管理しないようにした方が良いかも)</li>
+          <li class="fragment">コマンドで "php rocketeer.phar ignite" と打ち、設定ファイルを生成</li>
+        </ol>
+        <p class="fragment point">以下の設定ファイルが生成されます。(rocketeer/tasks.phpを除く)</p>
+        <ul class="fragment main">
+          <li>.rocketeer/config.php ... リモートの接続情報等を設定する</li>
+          <li>.rocketeer/hooks.php ... 今日のデモでは使っていません</li>
+          <li>.rocketeer/paths.php ... PHP, PHPUnit, Composer 等のパスを設定する</li>
+          <li>.rocketeer/remote.php ... デプロイに関する様々な設定をする</li>
+          <li>.rocketeer/scm.php ... レポジトリの設定をする</li>
+          <li>.rocketeer/stages.php ... 今日のデモでは使っていません</li>
+          <li>.rocketeer/tasks.php ... カスタムタスクを登録する</li>
+        </ul>
+        <p class="fragment point">これらの設定ファイルとカスタムタスクを組み合わせてデプロイします</p>
+      </section>
+    </section>
+
+    <section id="section-demo">
+      <h2>デモ</h2>
+      <p><a target="_blank" href="https://github.com/mamor/fuelphp-advent-calendar-2013-rocketeer-sample">https://github.com/mamor/fuelphp-advent-calendar-2013-rocketeer-sample</a> を使って</p>
+      <p><a target="_blank" href="http://madroom-project.blogspot.jp/2013/12/fac20131221.html">http://madroom-project.blogspot.jp/2013/12/fac20131221.html</a> のようなことをデモしてみます。</p>
+    </section>
+
+    <section id="section-end">
+      <h2>ご清聴ありがとうございました。</h2>
+    </section>
+
+  </div>
+</div>
+
+</body>
+</html>

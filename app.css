@@ -1,0 +1,30 @@
+[id^="section-"] {
+	text-align: left;
+}
+
+[id^="section-"] .main {
+	margin-bottom: 25px;
+}
+
+[id^="section-"] .point {
+	color:yellow;
+}
+
+#section-aboutme .icon {
+	float: left;
+	width: 380px;
+	height: 380px;
+	background-image: url(http://madroom.net/external/wolf_transparency.png);
+}
+
+#section-aboutme table tr {
+	line-height: 50px;
+}
+
+#section-aboutme table tr > th {
+	text-align: right;
+}
+
+#section-rocketeer-about ul {
+	vertical-align: top;
+}
